@@ -17,52 +17,52 @@ type Queue struct {
 
 func NewNode(value string) Node {
 	return Node{
-		value: value,
+		Value: value,
 	}
 }
 
 func NewGraph() Graph {
 	return Graph{
-		edges: make(map[Node]map[Node]bool),
+		Edges: make(map[Node]map[Node]bool),
 	}
 }
 
 func NewQueue() Queue {
 	return Queue{
-		list: []Node{},
+		List: []Node{},
 	}
 }
 
 // -----------------------------------------------------------------------------
 
 func (graph *Graph) AddNode(n Node) {
-	if _, ok := graph.edges[n]; !ok {
-		graph.edges[n] = make(map[Node]bool)
+	if _, ok := graph.Edges[n]; !ok {
+		graph.Edges[n] = make(map[Node]bool)
 	}
 }
 
 func (graph *Graph) AddEdge(n1, n2 Node) {
-	if _, ok := graph.edges[n1]; !ok {
-		graph.edges[n1] = make(map[Node]bool)
+	if _, ok := graph.Edges[n1]; !ok {
+		graph.Edges[n1] = make(map[Node]bool)
 	}
 
-	if _, ok := graph.edges[n1][n2]; !ok {
-		graph.edges[n1][n2] = true
+	if _, ok := graph.Edges[n1][n2]; !ok {
+		graph.Edges[n1][n2] = true
 	}
 
-	if _, ok := graph.edges[n2]; !ok {
-		graph.edges[n2] = make(map[Node]bool)
+	if _, ok := graph.Edges[n2]; !ok {
+		graph.Edges[n2] = make(map[Node]bool)
 	}
 
-	if _, ok := graph.edges[n2][n1]; !ok {
-		graph.edges[n2][n1] = true
+	if _, ok := graph.Edges[n2][n1]; !ok {
+		graph.Edges[n2][n1] = true
 	}
 }
 
 func (graph *Graph) GetNodes() []Node {
 	var nodes []Node
 
-	for key := range graph.edges {
+	for key := range graph.Edges {
 		nodes = append(nodes, key)
 	}
 
@@ -72,62 +72,61 @@ func (graph *Graph) GetNodes() []Node {
 func (graph *Graph) GetNeighbours(n Node) []Node {
 	var nodes []Node
 
-	for value := range graph.edges[n] {
+	for value := range graph.Edges[n] {
 		nodes = append(nodes, value)
 	}
 
 	return nodes
 }
 
+func (graph *Graph) inFound(n Node) bool {
+	for f := range graph.Found {
+		if graph.Found[f] == n {
+			return true
+		}
+	}
+	graph.Found = append(graph.Found, n)
+
+	return false
+}
+
 // -----------------------------------------------------------------------------
 
-func (queue *Queue) Pop() Node{
-	n := queue.list[0]
-	queue.list = queue.list[1:]
+func (queue *Queue) Pop() Node {
+	n := queue.List[0]
+	queue.List = queue.List[1:]
 
 	return n
 }
 
 func (queue *Queue) Push(n Node) {
-	queue.list = append(queue.list, n)
+	queue.List = append(queue.List, n)
 }
 
 // -----------------------------------------------------------------------------
 
-func BFS(graph Graph, s Node) bool {
-	// add node s to the queue
+func BFS(graph Graph, s, search Node ) bool {
+	// add node s to the queue and mark as found
+	graph.Found = append(graph.Found, s)
 	q := NewQueue()
 	q.Push(s)
+
+	//while the q isn't empty
 	for len(q.List) > 0 {
-
+		// get the first element in the queue
+		n1 := q.Pop()
+		neighbs := graph.GetNeighbours(n1)
+		// set all the unfound nodes as found and onto the queue
+		for i := range neighbs {
+			if search == neighbs[i] {
+				return true
+			}
+			if ! graph.inFound(neighbs[i]) {
+				q.Push(neighbs[i])
+			}
+		}
 	}
-	// get one of the neighbours that isn't itself and then add that to the queue
-
-	// repeat step 2 until you reach the desired node. and return true
-
+	return false
 }
 
 // -----------------------------------------------------------------------------
-
-func main() {
-	g := NewGraph()
-
-	s := NewNode("s")
-	a := NewNode("a")
-	b := NewNode("b")
-	c := NewNode("c")
-	d := NewNode("d")
-	e := NewNode("e")
-
-	g.AddEdge(s,a)
-	g.AddEdge(s,b)
-	g.AddEdge(a,c)
-	g.AddEdge(b,c)
-	g.AddEdge(b,d)
-	g.AddEdge(c,d)
-	g.AddEdge(c,e)
-	g.AddEdge(d,e)
-
-
-}
-

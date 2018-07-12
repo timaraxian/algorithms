@@ -20,8 +20,8 @@ func TestGraph_AddEdge(t *testing.T) {
 		},
 	}
 
-	if !reflect.DeepEqual(g.edges, exp) {
-		t.Errorf("%v != %v", exp, g.edges)
+	if !reflect.DeepEqual(g.Edges, exp) {
+		t.Errorf("%v != %v", exp, g.Edges)
 	}
 }
 
@@ -35,8 +35,8 @@ func TestGraph_AddNode(t *testing.T) {
 		s: {},
 	}
 
-	if !reflect.DeepEqual(g.edges, exp) {
-		t.Errorf("%v != %v", exp, g.edges)
+	if !reflect.DeepEqual(g.Edges, exp) {
+		t.Errorf("%v != %v", exp, g.Edges)
 	}
 }
 
@@ -88,8 +88,8 @@ func TestQueue(t *testing.T) {
 
 	exp1 := []Node{a, b, c, d}
 
-	if !neighborsEqual(q.list, exp1) {
-		t.Errorf("%v != %v", exp1, q.list)
+	if !neighborsEqual(q.List, exp1) {
+		t.Errorf("%v != %v", exp1, q.List)
 	}
 
 	result := q.Pop()
@@ -97,6 +97,43 @@ func TestQueue(t *testing.T) {
 
 	if result != exp2 {
 		t.Errorf("%v != %v", exp2, result)
+	}
+}
+
+func TestBFS(t *testing.T) {
+	//Given there is a graph with the following configuration
+	g := NewGraph()
+
+	s := NewNode("s")
+	a := NewNode("a")
+	b := NewNode("b")
+	c := NewNode("c")
+	d := NewNode("d")
+	e := NewNode("e")
+
+	g.AddEdge(s, a)
+	g.AddEdge(s, b)
+	g.AddEdge(a, c)
+	g.AddEdge(b, c)
+	g.AddEdge(b, d)
+	g.AddEdge(c, d)
+	g.AddEdge(c, e)
+	g.AddEdge(d, e)
+
+	// When BFS is called with node 'd' being the search node
+	resultTrue := BFS(g, s, d)
+	// Then 'true' should be returned
+	if ! resultTrue {
+		t.Errorf("%v != %v", true, resultTrue)
+	}
+
+	// and When there is a node 'f' which is the search node
+	f := NewNode("f")
+	resultFalse := BFS(g, s, f)
+
+	// Then 'false' should be returned
+	if resultFalse {
+		t.Errorf("%v != %v", false, resultFalse)
 	}
 }
 
