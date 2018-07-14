@@ -2,12 +2,12 @@ package BFS
 
 type Node struct {
 	Value string
-	Dist  int
 }
 
 type Graph struct {
-	Edges map[Node]map[Node]bool
-	Found []string
+	Edges    map[Node]map[Node]bool
+	Found    []Node
+	Explored map[Node]int
 }
 
 type Queue struct {
@@ -19,13 +19,13 @@ type Queue struct {
 func NewNode(value string) Node {
 	return Node{
 		Value: value,
-		Dist:  0,
 	}
 }
 
 func NewGraph() Graph {
 	return Graph{
-		Edges: make(map[Node]map[Node]bool),
+		Edges:    make(map[Node]map[Node]bool),
+		Explored: make(map[Node]int),
 	}
 }
 
@@ -81,13 +81,31 @@ func (graph *Graph) GetNeighbours(n Node) []Node {
 	return nodes
 }
 
-func (graph *Graph) inFound(value string) bool {
+func (graph *Graph) inFound(n Node) bool {
 	for f := range graph.Found {
-		if graph.Found[f] == value {
+		if graph.Found[f] == n {
 			return true
 		}
 	}
-	graph.Found = append(graph.Found, value)
+	graph.Found = append(graph.Found, n)
+
+	return false
+}
+
+func (graph *Graph) addExplored(n Node, dist int) {
+	if _, ok := graph.Explored[n]; !ok {
+		graph.Explored[n] = dist
+	}
+}
+
+func (graph *Graph) inExplored(prev, n Node) bool {
+	for e := range graph.Explored {
+		if e == n {
+			return true
+		}
+	}
+	dist := graph.Explored[prev] + 1
+	graph.addExplored(n, dist)
 
 	return false
 }
@@ -109,7 +127,7 @@ func (queue *Queue) Push(n Node) {
 
 func BFS(graph Graph, s, search Node) bool {
 	// add node s to the queue and mark as found
-	graph.Found = append(graph.Found, s.Value)
+	graph.Found = append(graph.Found, s)
 	q := NewQueue()
 	q.Push(s)
 
@@ -123,7 +141,7 @@ func BFS(graph Graph, s, search Node) bool {
 			if search == neighbs[i] {
 				return true
 			}
-			if ! graph.inFound(neighbs[i].Value) {
+			if ! graph.inFound(neighbs[i]) {
 				q.Push(neighbs[i])
 			}
 		}
@@ -134,12 +152,13 @@ func BFS(graph Graph, s, search Node) bool {
 // -----------------------------------------------------------------------------
 
 func BFSdist(graph Graph, s, search Node) (bool, int) {
-	graph.Found = append(graph.Found, s.Value)
+	graph.addExplored(s, 0)
 	q := NewQueue()
 	q.Push(s)
+
 	//base case s = search
 	if s == search {
-		return true, s.Dist
+		return true, graph.Explored[s]
 	}
 
 	for len(q.List) > 0 {
@@ -147,12 +166,11 @@ func BFSdist(graph Graph, s, search Node) (bool, int) {
 		neighbs := graph.GetNeighbours(n1)
 
 		for i := range neighbs {
-			neighbs[i].Dist = n1.Dist + 1
-			if search.Value == neighbs[i].Value {
-				return true, neighbs[i].Dist
-			}
-			if ! graph.inFound(neighbs[i].Value) {
+			if ! graph.inExplored(n1, neighbs[i]) {
 				q.Push(neighbs[i])
+			}
+			if search.Value == neighbs[i].Value {
+				return true, graph.Explored[neighbs[i]]
 			}
 		}
 	}
