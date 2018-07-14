@@ -137,7 +137,7 @@ func TestBFS(t *testing.T) {
 	}
 }
 
-func TestBFSdist(t *testing.T) {
+func TestBFSdist_s(t *testing.T) {
 	//Given there is a graph with the following configuration
 	g := NewGraph()
 
@@ -168,62 +168,203 @@ func TestBFSdist(t *testing.T) {
 	if !reflect.DeepEqual(dist, exDist) {
 		t.Errorf("%v != %v", exDist, dist)
 	}
+}
 
-	// and When BFSdist is called on node 'a'
-	conx, dist = BFSdist(g, s, a)
+func TestBFSdist_a(t *testing.T) {
+	//Given there is a graph with the following configuration
+	g := NewGraph()
+
+	s := NewNode("s")
+	a := NewNode("a")
+	b := NewNode("b")
+	c := NewNode("c")
+	d := NewNode("d")
+	e := NewNode("e")
+
+	g.AddEdge(s, a)
+	g.AddEdge(s, b)
+	g.AddEdge(a, c)
+	g.AddEdge(b, c)
+	g.AddEdge(b, d)
+	g.AddEdge(c, d)
+	g.AddEdge(c, e)
+	g.AddEdge(d, e)
+
+	// When BFSdist is called on node 'a'
+	conx, dist := BFSdist(g, s, a)
 
 	// Then the distance returned should be 0
-	exConx, exDist = true, 1
+	exConx, exDist := true, 1
 	if ! conx {
-		t.Errorf("%v != %v", conx, exConx)
+		t.Errorf("%v != %v", true, exConx)
 	}
 	if !reflect.DeepEqual(dist, exDist) {
 		t.Errorf("%v != %v", exDist, dist)
 	}
+}
 
-	// and When BFSdist is called on node 'b'
-	conx, dist = BFSdist(g, s, b)
+func TestBFSdist_b(t *testing.T) {
+	//Given there is a graph with the following configuration
+	g := NewGraph()
 
-	// Then the distance returned should be 1
-	exConx, exDist = true, 1
+	s := NewNode("s")
+	a := NewNode("a")
+	b := NewNode("b")
+	c := NewNode("c")
+	d := NewNode("d")
+	e := NewNode("e")
+
+	g.AddEdge(s, a)
+	g.AddEdge(s, b)
+	g.AddEdge(a, c)
+	g.AddEdge(b, c)
+	g.AddEdge(b, d)
+	g.AddEdge(c, d)
+	g.AddEdge(c, e)
+	g.AddEdge(d, e)
+
+	// When BFSdist is called on node 'a'
+	conx, dist := BFSdist(g, s, b)
+
+	// Then the distance returned should be 0
+	exConx, exDist := true, 1
 	if ! conx {
-		t.Errorf("%v != %v", conx, exConx)
+		t.Errorf("%v != %v", true, exConx)
 	}
 	if !reflect.DeepEqual(dist, exDist) {
 		t.Errorf("%v != %v", exDist, dist)
 	}
+}
 
-	// and When BFSdist is called on node 'c'
-	conx, dist = BFSdist(g, s, c)
+func TestBFSdist_c(t *testing.T) {
+	//Given there is a graph with the following configuration
+	g := NewGraph()
 
-	// Then the distance returned should be 2
-	exConx, exDist = true, 2
+	s := NewNode("s")
+	a := NewNode("a")
+	b := NewNode("b")
+	c := NewNode("c")
+	d := NewNode("d")
+	e := NewNode("e")
+
+	g.AddEdge(s, a)
+	g.AddEdge(s, b)
+	g.AddEdge(a, c)
+	g.AddEdge(b, c)
+	g.AddEdge(b, d)
+	g.AddEdge(c, d)
+	g.AddEdge(c, e)
+	g.AddEdge(d, e)
+
+	// When BFSdist is called on node 'a'
+	conx, dist := BFSdist(g, s, c)
+
+	// Then the distance returned should be 0
+	exConx, exDist := true, 2
 	if ! conx {
-		t.Errorf("%v != %v", conx, exConx)
+		t.Errorf("%v != %v", true, exConx)
 	}
 	if !reflect.DeepEqual(dist, exDist) {
 		t.Errorf("%v != %v", exDist, dist)
 	}
+}
 
-	// and When BFSdist is called on node 'd'
-	conx, dist = BFSdist(g, s, d)
 
-	// Then the distance returned should be 2
-	exConx, exDist = true, 2
+func TestBFSdist_d(t *testing.T) {
+	//Given there is a graph with the following configuration
+	g := NewGraph()
+
+	s := NewNode("s")
+	a := NewNode("a")
+	b := NewNode("b")
+	c := NewNode("c")
+	d := NewNode("d")
+	e := NewNode("e")
+
+	g.AddEdge(s, a)
+	g.AddEdge(s, b)
+	g.AddEdge(a, c)
+	g.AddEdge(b, c)
+	g.AddEdge(b, d)
+	g.AddEdge(c, d)
+	g.AddEdge(c, e)
+	g.AddEdge(d, e)
+
+	// When BFSdist is called on node 'a'
+	conx, dist := BFSdist(g, s, d)
+
+	// Then the distance returned should be 0
+	exConx, exDist := true, 2
 	if ! conx {
-		t.Errorf("%v != %v", conx, exConx)
+		t.Errorf("%v != %v", true, exConx)
 	}
 	if !reflect.DeepEqual(dist, exDist) {
 		t.Errorf("%v != %v", exDist, dist)
 	}
+}
 
-	// and When BFSdist is called on node 'e'
-	conx, dist = BFSdist(g, s, e)
 
-	// Then the distance returned should be 3
-	exConx, exDist = true, 3
+func TestBFSdist_e(t *testing.T) {
+	//Given there is a graph with the following configuration
+	g := NewGraph()
+
+	s := NewNode("s")
+	a := NewNode("a")
+	b := NewNode("b")
+	c := NewNode("c")
+	d := NewNode("d")
+	e := NewNode("e")
+
+	g.AddEdge(s, a)
+	g.AddEdge(s, b)
+	g.AddEdge(a, c)
+	g.AddEdge(b, c)
+	g.AddEdge(b, d)
+	g.AddEdge(c, d)
+	g.AddEdge(c, e)
+	g.AddEdge(d, e)
+
+	// When BFSdist is called on node 'a'
+	conx, dist := BFSdist(g, s, e)
+
+	// Then the distance returned should be 0
+	exConx, exDist := true, 3
 	if ! conx {
-		t.Errorf("%v != %v", conx, exConx)
+		t.Errorf("%v != %v", true, exConx)
+	}
+	if !reflect.DeepEqual(dist, exDist) {
+		t.Errorf("%v != %v", exDist, dist)
+	}
+}
+
+func TestBFSdist_f(t *testing.T) {
+	//Given there is a graph with the following configuration
+	g := NewGraph()
+
+	s := NewNode("s")
+	a := NewNode("a")
+	b := NewNode("b")
+	c := NewNode("c")
+	d := NewNode("d")
+	e := NewNode("e")
+	f := NewNode("f")
+
+	g.AddEdge(s, a)
+	g.AddEdge(s, b)
+	g.AddEdge(a, c)
+	g.AddEdge(b, c)
+	g.AddEdge(b, d)
+	g.AddEdge(c, d)
+	g.AddEdge(c, e)
+	g.AddEdge(d, e)
+
+	// When BFSdist is called on node 'a'
+	conx, dist := BFSdist(g, s, f)
+
+	// Then the distance returned should be 0
+	exConx, exDist := false, 0
+	if ! conx {
+		t.Errorf("%v != %v", true, exConx)
 	}
 	if !reflect.DeepEqual(dist, exDist) {
 		t.Errorf("%v != %v", exDist, dist)
