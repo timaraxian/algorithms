@@ -176,3 +176,33 @@ func BFSdist(graph Graph, s, search Node) (bool, int) {
 	}
 	return false, 0
 }
+
+// -----------------------------------------------------------------------------
+
+func BFSconnectivity(graph Graph) [][]Node {
+	var allConnections [][]Node
+	allNodes := graph.GetNodes()
+	q := NewQueue()
+	for i := range allNodes {
+		if graph.inFound(allNodes[i]) {
+			continue
+		}
+		q.Push(allNodes[i])
+		var connections []Node
+		connections = append(connections, allNodes[i])
+		for len(q.List) > 0 {
+			n1 := q.Pop()
+			neighbs := graph.GetNeighbours(n1)
+			for i := range neighbs {
+				if graph.inFound(neighbs[i]) {
+					continue
+				}
+				connections = append(connections, neighbs[i])
+				q.Push(neighbs[i])
+			}
+		}
+		allConnections = append(allConnections, connections)
+	}
+
+	return allConnections
+}
