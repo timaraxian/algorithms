@@ -1,7 +1,5 @@
 package DFS
 
-import "fmt"
-
 type Node struct {
 	Value string
 }
@@ -70,7 +68,7 @@ func (graph *Graph) GetNeighbours(n Node) []Node {
 			nodes = append(nodes, value)
 		}
 	}
-	fmt.Println(nodes)
+
 	return nodes
 }
 
@@ -86,11 +84,9 @@ func (graph *Graph) inFound(n Node) bool {
 // -----------------------------------------------------------------------------
 
 func DFS(graph Graph, s, search Node) bool {
-	fmt.Println("--DFS CALL--")
 	graph.inFound(s)
 	neighbs := graph.GetNeighbours(s)
-	for i := range neighbs {
-		fmt.Printf("exploring: %v\n", neighbs[i])
+	for range neighbs {
 		if neighbs[0] == search {
 			return true
 		}
