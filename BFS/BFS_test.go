@@ -269,7 +269,6 @@ func TestBFSdist_c(t *testing.T) {
 	}
 }
 
-
 func TestBFSdist_d(t *testing.T) {
 	//Given there is a graph with the following configuration
 	g := NewGraph()
@@ -302,7 +301,6 @@ func TestBFSdist_d(t *testing.T) {
 		t.Errorf("%v != %v", exDist, dist)
 	}
 }
-
 
 func TestBFSdist_e(t *testing.T) {
 	//Given there is a graph with the following configuration
@@ -371,6 +369,47 @@ func TestBFSdist_f(t *testing.T) {
 	}
 }
 
+func TestBFSconnectivity(t *testing.T) {
+	// Given there is a graph with the following configuration
+	graph := NewGraph()
+
+	a := NewNode("a")
+	b := NewNode("b")
+	c := NewNode("c")
+	d := NewNode("d")
+	e := NewNode("e")
+	f := NewNode("f")
+	g := NewNode("g")
+	h := NewNode("h")
+	i := NewNode("i")
+	j := NewNode("j")
+
+	graph.AddEdge(a, c)
+	graph.AddEdge(a, e)
+	graph.AddEdge(c, e)
+	graph.AddEdge(e, g)
+	graph.AddEdge(e, i)
+
+	graph.AddEdge(b, d)
+
+	graph.AddEdge(f, h)
+	graph.AddEdge(f, j)
+	graph.AddEdge(h, j)
+
+	// When we call BFSconnectivity on the graph
+	result := BFSconnectivity(graph)
+	// Then we should expect the connected nodes returned
+	exResult := [][]Node{
+		{a, c, e, g, i},
+		{b, d},
+		{f, h, j},
+	}
+
+	if !connectivityEqual(result, exResult) {
+		t.Errorf("%v != %v", exResult, result)
+	}
+}
+
 // -----------------------------------------------------------------------------
 // Helper functions
 // -----------------------------------------------------------------------------
@@ -395,5 +434,16 @@ func neighborsEqual(a []Node, b []Node) (e bool) {
 		}
 	}
 
+	return true
+}
+
+func connectivityEqual(result, expected [][]Node) bool {
+	for i := range result {
+		for j := range expected {
+			if neighborsEqual(result[i], expected[j]) {
+				continue
+			}
+		}
+	}
 	return true
 }
