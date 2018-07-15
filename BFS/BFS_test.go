@@ -363,8 +363,8 @@ func TestBFSdist_f(t *testing.T) {
 
 	// Then the distance returned should be 0
 	exConx, exDist := false, 0
-	if ! conx {
-		t.Errorf("%v != %v", true, exConx)
+	if conx {
+		t.Errorf("%v != %v", false, exConx)
 	}
 	if !reflect.DeepEqual(dist, exDist) {
 		t.Errorf("%v != %v", exDist, dist)
