@@ -2,6 +2,8 @@ package DFS
 
 import (
 	"testing"
+	"fmt"
+	"reflect"
 )
 
 func TestDFS_d(t *testing.T) {
@@ -59,6 +61,66 @@ func TestDFS_f(t *testing.T) {
 	// Then the result will be false
 	if result {
 		t.Errorf("%v != %v", false, result)
+	}
+}
+
+func TestGraph_GetNeighbours(t *testing.T) {
+	// Given there is a graph with the following configuration
+	g := NewGraph()
+
+	s := NewNode("s")
+	a := NewNode("a")
+	b := NewNode("b")
+	c := NewNode("c")
+
+	g.AddDirectedEdge(s, a)
+	g.AddDirectedEdge(s, b)
+	g.AddDirectedEdge(a, c)
+	g.AddDirectedEdge(b, c)
+
+	// When getNeighbours is called on node S
+	result := g.GetNeighbours(s)
+
+	// Then it should return node a and b
+	ex := []Node{a,b}
+
+	if !reflect.DeepEqual(ex,result){
+		t.Errorf("%v != %v", ex, result)
+	}
+}
+
+func TestDFStopological(t *testing.T) {
+	// Given there is a graph with the following configuration
+	g := NewGraph()
+
+	s := NewNode("s")
+	a := NewNode("a")
+	b := NewNode("b")
+	c := NewNode("c")
+
+	g.AddDirectedEdge(s, a)
+	g.AddDirectedEdge(s, b)
+	g.AddDirectedEdge(a, c)
+	g.AddDirectedEdge(b, c)
+
+	// When the DFS topological is called on it
+	result := DFStopological(g)
+
+	// Then one of the two correct orders is expected
+	exResult1 := []Node{c, b, a, s}
+	exResult2 := []Node{c, a, b, s}
+	fmt.Printf("\n\n********\nresult: %v\n********\n\n", result)
+
+	if !reflect.DeepEqual(result, exResult1) {
+		if !reflect.DeepEqual(result, exResult2) {
+			t.Errorf("\nexp: %v \n!=\nresult: %v", exResult1, result)
+		}
+	}
+
+	if !reflect.DeepEqual(result, exResult2) {
+		if !reflect.DeepEqual(result, exResult1) {
+			t.Errorf("\nexp: %v \n!=\nresult: %v", exResult2, result)
+		}
 	}
 }
 

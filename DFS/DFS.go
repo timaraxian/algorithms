@@ -1,5 +1,7 @@
 package DFS
 
+import "fmt"
+
 type Node struct {
 	Value string
 }
@@ -7,6 +9,7 @@ type Node struct {
 type Graph struct {
 	Edges map[Node]map[Node]bool
 	Found map[Node]bool
+	Order []Node
 }
 
 // -----------------------------------------------------------------------------
@@ -81,6 +84,16 @@ func (graph *Graph) inFound(n Node) bool {
 	return true
 }
 
+func (graph *Graph) AddDirectedEdge(n1, n2 Node) {
+	if _, ok := graph.Edges[n1]; !ok {
+		graph.Edges[n1] = make(map[Node]bool)
+	}
+
+	if _, ok := graph.Edges[n1][n2]; !ok {
+		graph.Edges[n1][n2] = true
+	}
+}
+
 // -----------------------------------------------------------------------------
 
 func DFS(graph Graph, s, search Node) bool {
@@ -95,4 +108,34 @@ func DFS(graph Graph, s, search Node) bool {
 		}
 	}
 	return false
+}
+
+func DFT(graph Graph, s Node, order []Node) []Node {
+	graph.inFound(s)
+	neighbs := graph.GetNeighbours(s)
+	for range neighbs {
+		if !graph.inFound(neighbs[0]) {
+			order = DFT(graph, neighbs[0], order)
+		}
+	}
+	order = append(order, s)
+	return order
+}
+
+func DFStopological(graph Graph) []Node {
+	fmt.Println("--START--")
+	allNodes := graph.GetNodes()
+	fmt.Printf("all nodes: %v\n", allNodes)
+	for i := range allNodes {
+		if !graph.inFound(allNodes[i]) {
+			neighbs := graph.GetNeighbours(allNodes[0])
+			fmt.Printf("neighbours of %v are %v\n, found nodes are: %v\n", allNodes[i], neighbs, graph.Found)
+			for j := range neighbs {
+				graph.Order = DFT(graph, neighbs[j], graph.Order)
+			}
+			graph.Order = append(graph.Order, allNodes[i])
+		}
+	}
+
+	return graph.Order
 }
