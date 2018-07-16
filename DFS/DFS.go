@@ -8,8 +8,10 @@ type Node struct {
 
 type Graph struct {
 	Edges map[Node]map[Node]bool
-	Found map[Node]bool
-	Order []Node
+	Found      map[Node]bool
+	LocalFound map[Node]bool
+	Order      map[Node]int
+	OrderFound map[Node]bool
 }
 
 // -----------------------------------------------------------------------------
@@ -22,8 +24,11 @@ func NewNode(value string) Node {
 
 func NewGraph() Graph {
 	return Graph{
-		Edges: make(map[Node]map[Node]bool),
-		Found: make(map[Node]bool),
+		Edges:      make(map[Node]map[Node]bool),
+		Found:      make(map[Node]bool),
+		LocalFound: make(map[Node]bool),
+		Order:      make(map[Node]int),
+		OrderFound:      make(map[Node]bool),
 	}
 }
 
@@ -84,6 +89,15 @@ func (graph *Graph) inFound(n Node) bool {
 	return true
 }
 
+func (graph *Graph) inLocalFound(n Node) bool {
+	if _, ok := graph.LocalFound[n]; !ok {
+		graph.LocalFound[n] = true
+		return false
+	}
+
+	return true
+}
+
 func (graph *Graph) AddDirectedEdge(n1, n2 Node) {
 	if _, ok := graph.Edges[n1]; !ok {
 		graph.Edges[n1] = make(map[Node]bool)
@@ -110,31 +124,45 @@ func DFS(graph Graph, s, search Node) bool {
 	return false
 }
 
-func DFT(graph Graph, s Node, order []Node) []Node {
-	graph.inFound(s)
+func DFT(graph Graph, s Node, increment int) int {
+	fmt.Printf("exploring: %v increment: %v\n", s, increment)
+	graph.inLocalFound(s)
 	neighbs := graph.GetNeighbours(s)
 	for range neighbs {
-		if !graph.inFound(neighbs[0]) {
-			order = DFT(graph, neighbs[0], order)
+		if !graph.inLocalFound(neighbs[0]) {
+			increment = DFT(graph, neighbs[0], increment)
 		}
 	}
-	order = append(order, s)
-	return order
+	graph.LocalFound = make(map[Node]bool)
+	if _, ok := graph.OrderFound[s]; !ok {
+		fmt.Printf("DFT: putting %v into order with increment of %v\n", s, increment)
+		graph.Order[s] = increment
+		graph.OrderFound[s] = true
+		increment --
+	}
+	return increment
 }
 
-func DFStopological(graph Graph) []Node {
-	fmt.Println("--START--")
+func DFStopological(graph Graph) map[Node]int {
 	allNodes := graph.GetNodes()
-	fmt.Printf("all nodes: %v\n", allNodes)
-	for i := range allNodes {
-		if !graph.inFound(allNodes[i]) {
-			neighbs := graph.GetNeighbours(allNodes[0])
-			fmt.Printf("neighbours of %v are %v\n, found nodes are: %v\n", allNodes[i], neighbs, graph.Found)
+	fmt.Printf("allnodes: %v\n", allNodes)
+	increment := len(allNodes)
+	for increment > 0 {
+		fmt.Printf("DFS OUTER ON: %v\n", allNodes[increment-1])
+		if !graph.inFound(allNodes[increment-1]) {
+			neighbs := graph.GetNeighbours(allNodes[increment-1])
 			for j := range neighbs {
-				graph.Order = DFT(graph, neighbs[j], graph.Order)
+				increment = DFT(graph, neighbs[j], increment)
+				graph.inFound(neighbs[j])
 			}
-			graph.Order = append(graph.Order, allNodes[i])
 		}
+		if _, ok := graph.OrderFound[allNodes[increment-1]]; !ok {
+			fmt.Printf("main: putting %v into order with increment %v\n", allNodes[increment-1], increment)
+			graph.Order[allNodes[increment-1]] = increment
+			graph.OrderFound[allNodes[increment-1]] = true
+
+		}
+		increment --
 	}
 
 	return graph.Order
