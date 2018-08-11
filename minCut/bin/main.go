@@ -57,6 +57,7 @@ func main() {
         } 
 
         if minCut == 17 {
+          fmt.Println("cuts: ", minCut)
           panic(i)
         }
         break

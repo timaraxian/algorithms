@@ -296,14 +296,14 @@ func BenchmarkIntNative(b *testing.B) {
 		Nativemult(input1, input2)
 	}
 }
-
-func BenchmarkIntBinaryMul(b *testing.B) {
-	for i := 0; i <= b.N; i++ {
-		//b.StopTimer()
-		input1 := rand.Intn(100)
-		input2 := rand.Intn(100)
-		//b.StartTimer()
-		IterativeDoubleHalf(input1, input2)
-	}
-}
+//
+//func BenchmarkIntBinaryMul(b *testing.B) {
+//	for i := 0; i <= b.N; i++ {
+//		//b.StopTimer()
+//		input1 := rand.Intn(100)
+//		input2 := rand.Intn(100)
+//		//b.StartTimer()
+//		IterativeDoubleHalf(input1, input2)
+//	}
+//}
 

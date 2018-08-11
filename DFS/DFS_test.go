@@ -2,7 +2,6 @@ package DFS
 
 import (
 	"testing"
-	"fmt"
 	"reflect"
 )
 
@@ -88,28 +87,6 @@ func TestGraph_GetNeighbours(t *testing.T) {
 	if !reflect.DeepEqual(ex,result){
 		t.Errorf("%v != %v", ex, result)
 	}
-}
-
-func TestDFStopological(t *testing.T) {
-	// Given there is a graph with the following configuration
-	g := NewGraph()
-
-	s := NewNode("s")
-	a := NewNode("a")
-	b := NewNode("b")
-	c := NewNode("c")
-
-	g.AddDirectedEdge(s, a)
-	g.AddDirectedEdge(s, b)
-	g.AddDirectedEdge(a, c)
-	g.AddDirectedEdge(b, c)
-	g.AddNode(c)
-
-	// When the DFS topological is called on it
-	result := DFStopological(g)
-
-	// Then one of the two correct orders is expected
-	fmt.Printf("\n\n********\nresult: %v\n********\n\n", result)
 }
 
 // -----------------------------------------------------------------------------

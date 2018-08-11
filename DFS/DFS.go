@@ -1,7 +1,5 @@
 package DFS
 
-import "fmt"
-
 type Node struct {
 	Value string
 }
@@ -122,48 +120,4 @@ func DFS(graph Graph, s, search Node) bool {
 		}
 	}
 	return false
-}
-
-func DFT(graph Graph, s Node, increment int) int {
-	fmt.Printf("exploring: %v increment: %v\n", s, increment)
-	graph.inLocalFound(s)
-	neighbs := graph.GetNeighbours(s)
-	for range neighbs {
-		if !graph.inLocalFound(neighbs[0]) {
-			increment = DFT(graph, neighbs[0], increment)
-		}
-	}
-	graph.LocalFound = make(map[Node]bool)
-	if _, ok := graph.OrderFound[s]; !ok {
-		fmt.Printf("DFT: putting %v into order with increment of %v\n", s, increment)
-		graph.Order[s] = increment
-		graph.OrderFound[s] = true
-		increment --
-	}
-	return increment
-}
-
-func DFStopological(graph Graph) map[Node]int {
-	allNodes := graph.GetNodes()
-	fmt.Printf("allnodes: %v\n", allNodes)
-	increment := len(allNodes)
-	for increment > 0 {
-		fmt.Printf("DFS OUTER ON: %v\n", allNodes[increment-1])
-		if !graph.inFound(allNodes[increment-1]) {
-			neighbs := graph.GetNeighbours(allNodes[increment-1])
-			for j := range neighbs {
-				increment = DFT(graph, neighbs[j], increment)
-				graph.inFound(neighbs[j])
-			}
-		}
-		if _, ok := graph.OrderFound[allNodes[increment-1]]; !ok {
-			fmt.Printf("main: putting %v into order with increment %v\n", allNodes[increment-1], increment)
-			graph.Order[allNodes[increment-1]] = increment
-			graph.OrderFound[allNodes[increment-1]] = true
-
-		}
-		increment --
-	}
-
-	return graph.Order
 }
