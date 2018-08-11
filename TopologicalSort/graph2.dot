@@ -1,0 +1,8 @@
+digraph gr2 {
+
+A -> B
+B -> C
+B -> D
+E -> C
+
+}

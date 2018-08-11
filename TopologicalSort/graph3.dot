@@ -1,0 +1,12 @@
+digraph gr3 {
+
+A -> E
+A -> B
+B -> F
+E -> C
+C -> F
+F -> H
+D -> H
+G
+
+}
