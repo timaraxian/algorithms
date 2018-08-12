@@ -1,0 +1,17 @@
+digraph {
+  A -> D
+  D -> G
+  G -> A
+
+  I -> G
+  I -> C
+  C -> F
+  F -> I
+
+  H -> F
+  H -> B
+  E -> H
+  B -> E
+  { rank = same; A; G; I; F; H; E;}
+  #{ rank = same; B; C; D;}
+}
