@@ -10,8 +10,8 @@ func TestNewHeap(t *testing.T) {
 
 	exp := make([]int,0)
 
-	if !reflect.DeepEqual(exp, h.items) {
-		t.Errorf("%v != %v", exp, h.items)
+	if !reflect.DeepEqual(exp, h.Items) {
+		t.Errorf("%v != %v", exp, h.Items)
 	}
 }
 
@@ -21,22 +21,22 @@ func TestHeap_Insert(t *testing.T) {
 	h.Insert(1)
 
 	exp := []int{1}
-	if !reflect.DeepEqual(exp, h.items) {
-		t.Errorf("%v != %v", exp, h.items)
+	if !reflect.DeepEqual(exp, h.Items) {
+		t.Errorf("%v != %v", exp, h.Items)
 	}
 
 	h.Insert(5)
 
 	exp = []int{1,5}
-	if !reflect.DeepEqual(exp, h.items) {
-		t.Errorf("%v != %v", exp, h.items)
+	if !reflect.DeepEqual(exp, h.Items) {
+		t.Errorf("%v != %v", exp, h.Items)
 	}
 
 	h.Insert(3)
 
 	exp = []int{1,5,3}
-	if !reflect.DeepEqual(exp, h.items) {
-		t.Errorf("%v != %v", exp, h.items)
+	if !reflect.DeepEqual(exp, h.Items) {
+		t.Errorf("%v != %v", exp, h.Items)
 	}
 }
 
@@ -45,50 +45,50 @@ func TestHeap_Insert2(t *testing.T) {
 
 	h.Insert(1)
 	exp := []int{1}
-	if !reflect.DeepEqual(exp, h.items) {
-		t.Errorf("%v != %v", exp, h.items)
+	if !reflect.DeepEqual(exp, h.Items) {
+		t.Errorf("%v != %v", exp, h.Items)
 	}
 
 	h.Insert(1)
 	exp = []int{1,1}
-	if !reflect.DeepEqual(exp, h.items) {
-		t.Errorf("%v != %v", exp, h.items)
+	if !reflect.DeepEqual(exp, h.Items) {
+		t.Errorf("%v != %v", exp, h.Items)
 	}
 
 	h.Insert(13)
 	exp = []int{1,1,13}
-	if !reflect.DeepEqual(exp, h.items) {
-		t.Errorf("%v != %v", exp, h.items)
+	if !reflect.DeepEqual(exp, h.Items) {
+		t.Errorf("%v != %v", exp, h.Items)
 	}
 
 	h.Insert(3)
 	exp = []int{1,1,13,3}
-	if !reflect.DeepEqual(exp, h.items) {
-		t.Errorf("%v != %v", exp, h.items)
+	if !reflect.DeepEqual(exp, h.Items) {
+		t.Errorf("%v != %v", exp, h.Items)
 	}
 
 	h.Insert(8)
 	exp = []int{1,1,13,3,8}
-	if !reflect.DeepEqual(exp, h.items) {
-		t.Errorf("%v != %v", exp, h.items)
+	if !reflect.DeepEqual(exp, h.Items) {
+		t.Errorf("%v != %v", exp, h.Items)
 	}
 
 	h.Insert(5)
 	exp = []int{1,1,5,3,8,13}
-	if !reflect.DeepEqual(exp, h.items) {
-		t.Errorf("%v != %v", exp, h.items)
+	if !reflect.DeepEqual(exp, h.Items) {
+		t.Errorf("%v != %v", exp, h.Items)
 	}
 
 	h.Insert(2)
 	exp = []int{1,1,2,3,8,13,5}
-	if !reflect.DeepEqual(exp, h.items) {
-		t.Errorf("%v != %v", exp, h.items)
+	if !reflect.DeepEqual(exp, h.Items) {
+		t.Errorf("%v != %v", exp, h.Items)
 	}
 
 	h.Insert(21)
 	exp = []int{1,1,2,3,8,13,5,21}
-	if !reflect.DeepEqual(exp, h.items) {
-		t.Errorf("%v != %v", exp, h.items)
+	if !reflect.DeepEqual(exp, h.Items) {
+		t.Errorf("%v != %v", exp, h.Items)
 	}
 }
 
