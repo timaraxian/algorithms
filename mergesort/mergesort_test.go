@@ -59,7 +59,7 @@ func TestMergeSort_n3(t *testing.T) {
 	}
 }
 
-func TestMergeSort_ndick(t *testing.T) {
+func TestMergeSort_nrand(t *testing.T) {
 	rand.Seed(time.Now().UnixNano())
 	sorted := make([]int, 1000)
 	for i := 0; i < 1000; i++ {
@@ -76,7 +76,7 @@ func TestMergeSort_ndick(t *testing.T) {
 	}
 }
 
-func TestMergeSort_ndickbubble(t *testing.T) {
+func TestMergeSort_nrand2(t *testing.T) {
 	rand.Seed(time.Now().UnixNano())
 	sorted := make([]int, 1000)
 	for i := 0; i < 1000; i++ {
